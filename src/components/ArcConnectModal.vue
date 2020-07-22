@@ -75,13 +75,6 @@
       }
     },
 
-    props: {
-      visible: {
-        type: Boolean,
-        required: true,
-      }
-    },
-
     created () {
       this.qrScanner = null
     },
