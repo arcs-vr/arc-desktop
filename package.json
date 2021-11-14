@@ -25,10 +25,10 @@
     "@chenfengyuan/vue-qrcode": "^1.0.2",
     "arc-events": "arcs-vr/arc-events",
     "arc-vue-options-plugin": "arcs-vr/arc-vue-options-plugin",
-    "async-mqtt": "^2.4.2",
-    "qr-scanner": "^1.1.1",
-    "uuid": "^7.0.2",
-    "vue": "^2.6.11"
+    "async-mqtt": "^2.6.1",
+    "qr-scanner": "^1.3.0",
+    "uuid": "^8.3.2",
+    "vue": "^2.6.14"
   },
   "peerDependencies": {
     "arc-cd": "arcs-vr/arc-cd"
@@ -37,11 +37,10 @@
     "arc-cd": "arcs-vr/arc-cd",
     "core-js": "^3",
     "regenerator-runtime": "^0.13.5",
-    "eslint": "^7.5.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.0",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1"
+    "eslint-plugin-promise": "^5.1.1"
   }
 }

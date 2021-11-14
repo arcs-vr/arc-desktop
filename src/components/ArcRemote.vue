@@ -1,81 +1,95 @@
 <template>
-    <main :class="{'connected': connected, 'info-active': infoActive}"
-          class="arc-remote"
-    >
-        <div class="top">
-            <arc-intro :device-name="deviceName"
-                       :route-app="$arcOptions.routeApp"
-                       v-if="deviceName !== null"
-            />
-            <transition appear
-                        mode="out-in"
-                        name="fade"
-            >
-                <div class="button-bar"
-                     v-if="connected"
-                >
-                    <button @click="toggleInfo"
-                            class="button button-info"
-                    >
-                        <img src="~arc-cd/images/info-24px.svg"
-                             alt="Info symbol"
-                             class="icon"
-                             title="Show/Hide info screen"
-                        >
-                    </button>
-                    <span class="status">
-                        Status:&nbsp;
-                        <strong class="connected"
-                                v-if="connected"
-                        >Connected</strong>
-                        <strong class="not-connected"
-                                v-else
-                        >Not Connected</strong>
-                    </span>
-                    <button @click="toggleFullscreen"
-                            class="button button-fullscreen"
-                    >
-                        <transition appear
-                                    mode="out-in"
-                                    name="fade"
-                        >
-                            <img src="~arc-cd/images/fullscreen_exit-24px.svg"
-                                 alt="Exit fullscreen symbol"
-                                 class="icon"
-                                 title="Exit fullscreen"
-                                 v-if="fullscreen"
-                            >
-                            <img src="~arc-cd/images/fullscreen-24px.svg"
-                                 alt="Enter fullscreen symbol"
-                                 class="icon"
-                                 title="Enter fullscreen"
-                                 v-else
-                            >
-                        </transition>
-                    </button>
-                </div>
-            </transition>
-        </div>
-        <div class="bottom"
-             tabindex="0"
+  <main
+    :class="{'connected': connected, 'info-active': infoActive}"
+    class="arc-remote"
+  >
+    <div class="top">
+      <arc-intro
+        :device-name="deviceName"
+        :route-app="$arcOptions.routeApp"
+        v-if="deviceName !== null"
+      />
+      <transition
+        appear
+        mode="out-in"
+        name="fade"
+      >
+        <div
+          class="button-bar"
+          v-if="connected"
         >
-            <transition appear
-                        mode="out-in"
-                        name="fade"
+          <button
+            @click="toggleInfo"
+            class="button button-info"
+          >
+            <img
+              src="~arc-cd/images/info-24px.svg"
+              alt="Info symbol"
+              class="icon"
+              title="Show/Hide info screen"
             >
-                <div class="connected-container">
-                    <slot/>
-                </div>
+          </button>
+          <span class="status">
+            Status:&nbsp;
+            <strong
+              class="connected"
+              v-if="connected"
+            >Connected</strong>
+            <strong
+              class="not-connected"
+              v-else
+            >Not Connected</strong>
+          </span>
+          <button
+            @click="toggleFullscreen"
+            class="button button-fullscreen"
+          >
+            <transition
+              appear
+              mode="out-in"
+              name="fade"
+            >
+              <img
+                src="~arc-cd/images/fullscreen_exit-24px.svg"
+                alt="Exit fullscreen symbol"
+                class="icon"
+                title="Exit fullscreen"
+                v-if="fullscreen"
+              >
+              <img
+                src="~arc-cd/images/fullscreen-24px.svg"
+                alt="Enter fullscreen symbol"
+                class="icon"
+                title="Enter fullscreen"
+                v-else
+              >
             </transition>
+          </button>
         </div>
-    </main>
+      </transition>
+    </div>
+    <div
+      class="bottom"
+      tabindex="0"
+    >
+      <transition
+        appear
+        mode="out-in"
+        name="fade"
+      >
+        <div class="connected-container">
+          <slot/>
+        </div>
+      </transition>
+    </div>
+  </main>
 </template>
 
 <script>
-  import { connectAsync }                              from 'async-mqtt'
+  import { connectAsync } from 'async-mqtt'
   import { ArcTopics, createPayload, eventNameToType } from 'arc-events'
-  import { v4 as uuidv4 }                              from 'uuid'
-  import { exitFullscreen, requestFullscreen }         from '../utils/PrefixedFullscreen.js'
+  import { v4 as uuidv4 } from 'uuid'
+  import { exitFullscreen, requestFullscreen } from '../utils/PrefixedFullscreen.js'
 
   import ArcIntro from './ArcIntro.vue'
 
@@ -103,7 +117,7 @@
      */
     async mounted () {
       this.deviceName = this.generateName()
-      this.paircode   = this.$arcOptions.app + '/' + this.deviceName.replace(' ', '-').toLowerCase()
+      this.paircode = this.$arcOptions.app + '/' + this.deviceName.replace(' ', '-').toLowerCase()
       this.connect()
     },
 
@@ -182,7 +196,7 @@
        */
       async messageListener (topic, payload) {
         const topicPath = topic.split('/')
-        const subTopic  = topicPath[topicPath.length - 1]
+        const subTopic = topicPath[topicPath.length - 1]
 
         const message = JSON.parse(payload.toString())
 
@@ -260,140 +274,141 @@
             qos: 0
           }
         )
-      },
+      }
     }
   }
 </script>
 
-<style lang="scss"
-       scoped
+<style
+  lang="scss"
+  scoped
 >
-    @import '../styles/variables';
-    @import '~arc-cd/src/variables';
-    @import '~arc-cd/src/fonts';
-    @import '~arc-cd/src/typography';
+  @import "../styles/variables";
+  @import "~arc-cd/src/variables";
+  @import "~arc-cd/src/fonts";
+  @import "~arc-cd/src/typography";
 
-    $button-bar-height: .75 * $inner-padding;
+  $button-bar-height: .75 * $inner-padding;
 
-    .fade-enter-active,
-    .fade-leave-active {
-        transition: opacity $duration ease;
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity $duration ease;
+  }
+
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
+
+  .arc-remote {
+    color: $theme-light;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-family: $font-paragraph;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+
+    &.connected {
+      .top {
+        padding-bottom: $inner-padding;
+      }
     }
 
-    .fade-enter,
-    .fade-leave-to {
-        opacity: 0;
+    &.connected:not(.info-active) {
+      .top {
+        transform: translateY(calc(-100% + #{$button-bar-height}));
+      }
+    }
+  }
+
+  .top,
+  .bottom {
+    display: flex;
+    height: 100%;
+    transition: transform $duration ease, padding $duration ease;
+    width: 100%;
+  }
+
+  .top {
+    background-color: $theme-dark;
+    box-shadow: 0 0 20px #000;
+    position: relative;
+    z-index: 10;
+
+    .button-bar {
+      background-color: $theme-dark;
+      bottom: 0;
+      display: flex;
+      flex-direction: row;
+      height: $button-bar-height;
+      justify-content: space-between;
+      left: 0;
+      padding: 0 1rem;
+      position: absolute;
+      right: 0;
+      width: 100%;
     }
 
-    .arc-remote {
-        color: $theme-light;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        font-family: $font-paragraph;
-        height: 100%;
-        overflow: hidden;
-        position: relative;
-        width: 100%;
+    .button {
+      background: transparent;
+      border: 0;
+      color: $theme-light;
+      cursor: pointer;
+      font-size: 1.6rem;
+      height: $button-bar-height;
+      line-height: $button-bar-height;
+      outline: 0;
 
-        &.connected {
-            .top {
-                padding-bottom: $inner-padding;
-            }
-        }
+      &:focus {
+        background-color: transparentize($theme-light, .75);
+      }
 
-        &.connected:not(.info-active) {
-            .top {
-                transform: translateY(calc(-100% + #{$button-bar-height}));
-            }
-        }
+      &:active {
+        background-color: transparentize($theme-light, .5);
+      }
     }
 
-    .top,
-    .bottom {
-        display: flex;
-        height: 100%;
-        transition: transform $duration ease, padding $duration ease;
-        width: 100%;
+    .icon {
+      height: 100%;
+      width: 100%;
     }
 
-    .top {
-        background-color: $theme-dark;
-        box-shadow: 0 0 20px #000;
-        position: relative;
-        z-index: 10;
+    .status {
+      height: $button-bar-height;
+      line-height: $button-bar-height;
 
-        .button-bar {
-            background-color: $theme-dark;
-            bottom: 0;
-            display: flex;
-            flex-direction: row;
-            height: $button-bar-height;
-            justify-content: space-between;
-            left: 0;
-            padding: 0 1rem;
-            position: absolute;
-            right: 0;
-            width: 100%;
-        }
+      .connected {
+        color: $theme-secondary;
+      }
 
-        .button {
-            background: transparent;
-            border: 0;
-            color: $theme-light;
-            cursor: pointer;
-            font-size: 1.6rem;
-            height: $button-bar-height;
-            line-height: $button-bar-height;
-            outline: 0;
-
-            &:focus {
-                background-color: transparentize($theme-light, .75);
-            }
-
-            &:active {
-                background-color: transparentize($theme-light, .5);
-            }
-        }
-
-        .icon {
-            height: 100%;
-            width: 100%;
-        }
-
-        .status {
-            height: $button-bar-height;
-            line-height: $button-bar-height;
-
-            .connected {
-                color: $theme-secondary;
-            }
-
-            .not-connected {
-                color: $theme-primary;
-            }
-        }
+      .not-connected {
+        color: $theme-primary;
+      }
     }
+  }
 
-    .bottom {
-        align-items: center;
-        background: linear-gradient($theme-primary, $theme-secondary);
-        bottom: 0;
-        height: calc(100% - #{$button-bar-height});
-        position: absolute;
-        top: $button-bar-height;
-        z-index: 0;
+  .bottom {
+    align-items: center;
+    background: linear-gradient($theme-primary, $theme-secondary);
+    bottom: 0;
+    height: calc(100% - #{$button-bar-height});
+    position: absolute;
+    top: $button-bar-height;
+    z-index: 0;
 
-        .connected-container {
-            align-items: center;
-            display: flex;
-            flex-direction: row;
-            height: 100%;
-            justify-content: center;
-            margin: auto;
-            position: relative;
-            text-align: center;
-            width: 100%;
-        }
+    .connected-container {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      height: 100%;
+      justify-content: center;
+      margin: auto;
+      position: relative;
+      text-align: center;
+      width: 100%;
     }
+  }
 </style>

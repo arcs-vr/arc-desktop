@@ -6,14 +6,14 @@
  * @return {Promise<void>}
  */
 export function requestFullscreen (element, navigationUI = 'auto') {
-  const requestFunction = element.requestFullscreen
-    || element.webkitRequestFullScreen
-    || element.mozRequestFullScreen
-    || element.msRequestFullscreen
-    || null
+  const requestFunction = element.requestFullscreen ||
+    element.webkitRequestFullScreen ||
+    element.mozRequestFullScreen ||
+    element.msRequestFullscreen ||
+    null
 
-  if (null === requestFunction) {
-    return Promise.reject()
+  if (requestFunction === null) {
+    return Promise.reject(new Error('Fullscreen not supported'))
   }
 
   return promisify(requestFunction.call(element, {
@@ -26,14 +26,14 @@ export function requestFullscreen (element, navigationUI = 'auto') {
  * @return {Promise<void>}
  */
 export function exitFullscreen () {
-  const exitFunction = document.exitFullscreen
-    || document.webkitExitFullScreen
-    || document.mozExitFullScreen
-    || document.msExitFullscreen
-    || null
+  const exitFunction = document.exitFullscreen ||
+    document.webkitExitFullScreen ||
+    document.mozExitFullScreen ||
+    document.msExitFullscreen ||
+    null
 
-  if (null === exitFunction) {
-    return Promise.reject()
+  if (exitFunction === null) {
+    return Promise.reject(new Error('Fullscreen not supported'))
   }
 
   return promisify(exitFunction.call(document))
