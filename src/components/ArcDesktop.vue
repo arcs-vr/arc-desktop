@@ -199,10 +199,10 @@
   lang="scss"
   scoped
 >
-  @import "../styles/variables";
-  @import "~arc-cd/src/variables";
-  @import "~arc-cd/src/fonts";
-  @import "~arc-cd/src/typography";
+  @import '../styles/variables';
+  @import '~arc-cd/src/variables';
+  @import '~arc-cd/src/fonts';
+  @import '~arc-cd/src/typography';
 
   $size: 25vmax;
 
@@ -292,5 +292,5 @@
 </style>
 
 <style lang="scss">
-  @import "~arc-cd/src/reset";
+  @import '~arc-cd/src/reset';
 </style>

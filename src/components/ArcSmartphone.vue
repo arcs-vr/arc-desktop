@@ -22,6 +22,7 @@
           <span
             :class="{'animated': cursorX === 0 && cursorY === 0}"
             :style="cursorTransform"
+            @touchstart.passive
             class="cursor"
             ref="cursor"
           />
@@ -225,10 +226,10 @@
   lang="scss"
   scoped
 >
-  @import "../styles/variables";
-  @import "~arc-cd/src/variables";
-  @import "~arc-cd/src/fonts";
-  @import "~arc-cd/src/typography";
+  @import '../styles/variables';
+  @import '~arc-cd/src/variables';
+  @import '~arc-cd/src/fonts';
+  @import '~arc-cd/src/typography';
 
   .portrait-hint {
     align-items: center;
@@ -348,7 +349,7 @@
 
   .cursor {
     background-color: transparentize($theme-light, .5);
-    background-image: url("~arc-cd/images/joystick_arrows.svg");
+    background-image: url('~arc-cd/images/joystick_arrows.svg');
     border: 2px solid transparentize($theme-light, .25);
     height: 4 * $cursor-base;
     max-height: 60vmin;
@@ -362,5 +363,5 @@
 </style>
 
 <style lang="scss">
-  @import "~arc-cd/src/reset";
+  @import '~arc-cd/src/reset';
 </style>

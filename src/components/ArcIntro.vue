@@ -55,7 +55,7 @@
 
 <script>
   import VueQrcode from '@chenfengyuan/vue-qrcode/src/index.js'
-  import ThemeColors from 'arc-cd/src/_exports.scss?module'
+  import ThemeColors from 'arc-cd/src/_variables.scss?module'
 
   export default {
     name: 'arc-intro',
@@ -93,11 +93,11 @@
   lang="scss"
   scoped
 >
-  @use "sass:math";
-  @import "../styles/variables";
-  @import "~arc-cd/src/variables";
-  @import "~arc-cd/src/fonts";
-  @import "~arc-cd/src/typography";
+  @use 'sass:math';
+  @import '../styles/variables';
+  @import '~arc-cd/src/variables';
+  @import '~arc-cd/src/fonts';
+  @import '~arc-cd/src/typography';
 
   .intro {
     align-items: center;

@@ -142,10 +142,10 @@
   lang="scss"
   scoped
 >
-  @use "sass:math";
-  @import "~arc-cd/src/variables";
-  @import "~arc-cd/src/fonts";
-  @import "~arc-cd/src/typography";
+  @use 'sass:math';
+  @import '~arc-cd/src/variables';
+  @import '~arc-cd/src/fonts';
+  @import '~arc-cd/src/typography';
 
   .arc-connect-modal {
     align-items: flex-start;

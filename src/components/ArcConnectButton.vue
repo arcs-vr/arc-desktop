@@ -18,7 +18,7 @@
 
 <script>
   /**
-   * Button that displays next to the google enter-VR button and that calls a callback attached to 'arc-connect'
+   * Button that displays next to the Google enter-VR button and that calls a callback attached to 'arc-connect'
    */
   export default {
     name: 'arc-connect-button'
@@ -29,7 +29,7 @@
   lang="scss"
   scoped
 >
-  @import "~arc-cd/src/variables";
+  @import '~arc-cd/src/variables';
 
   $enter-vr-button-padding: 20px;
   $enter-vr-button-width: 58px;
@@ -67,7 +67,7 @@
 </style>
 
 <style lang="scss">
-  @import "~arc-cd/src/variables";
+  @import '~arc-cd/src/variables';
 
   .a-enter-vr-button:hover {
     background-color: darken($theme-primary, 20%) !important;
