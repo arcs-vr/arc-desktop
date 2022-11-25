@@ -2,9 +2,9 @@
   <div class="arc-connect-modal">
     <div class="modal-header">
       <button
-        @click="$emit('close')"
         class="close-button"
         type="button"
+        @click="$emit('close')"
       >
         Close
       </button>
@@ -28,7 +28,7 @@
 
       <div class="section">
         <p>
-          <i>1)</i>&nbsp;On your second device, pen the remote control website:
+          <i>1)</i>&nbsp;On your second device, open the remote control website:
           <router-link
             :to="{name: $arcOptions.routeRemote}"
             v-text="remoteUrl"
@@ -36,42 +36,44 @@
         </p>
       </div>
 
-      <div class="section">
+      <form
+        class="section"
+        @submit.prevent="connect"
+      >
         <p>
-          <i>2)</i>&nbsp;Scan the QR code shown on the other device.
+          <i>2A)</i>&nbsp;Scan the QR code shown on the other device.
         </p>
-        <div class="video-wrapper">
-          <video
-            class="video"
-            crossorigin="anonymous"
-            muted
-            playsinline
-            ref="video"
+        <label>
+          <span>Enter the code:</span>
+          <input
+            v-model="deviceName"
+            type="text"
+            @keydown.enter="connect"
           />
-          <p
-            @click="startCamera"
-            class="camera-permission-info"
-            v-if="showInfo"
-          >
-            You need to grant this website permission to access the camera in order to scan a QR code.
-          </p>
-        </div>
-      </div>
+          <button type="submit">Submit</button>
+        </label>
+      </form>
     </div>
   </div>
 </template>
 
 <script>
-  import QrScanner from 'qr-scanner'
-  import QrScannerWorkerPath from 'qr-scanner/qr-scanner-worker.min.js'
-
-  QrScanner.WORKER_PATH = QrScannerWorkerPath
+  import ThemeColors from 'arc-cd/src/_variables.scss?module'
 
   /**
    * Displays a modal with connection instructions and triggers a 'arc-remote-name' event with the scanned device name.
    */
   export default {
     name: 'arc-connect-modal',
+
+    props: {
+      themeColors: {
+        type: Object,
+        default () {
+          return ThemeColors
+        }
+      }
+    },
 
     data () {
       return {
@@ -80,40 +82,9 @@
       }
     },
 
-    created () {
-      this.qrScanner = null
-    },
-
     methods: {
-      handleQRCodeValue (result) {
-        this.$emit('arc-remote-name', result)
-        this.stopCamera()
-      },
-
-      async startCamera () {
-        if (this.qrScanner) {
-          this.stopCamera()
-        }
-
-        this.qrScanner = new QrScanner(
-          this.$refs.video,
-          this.handleQRCodeValue,
-          300
-        )
-
-        this.qrScanner.setInversionMode('invert')
-        await this.qrScanner.start()
-
-        this.showInfo = !Boolean(this.$refs.video.srcObject)
-      },
-
-      stopCamera () {
-        if (this.qrScanner) {
-          this.qrScanner.destroy()
-        }
-
-        this.qrScanner = null
-        this.showInfo = false
+      connect () {
+        this.$emit('arc-remote-name', this.deviceName)
       }
     },
 
@@ -126,14 +97,6 @@
         const path = this.$router.resolve({ name: this.$arcOptions.routeRemote }).href
         return `${window.location.host}${path === '/' ? '' : path}`
       }
-    },
-
-    activated () {
-      this.startCamera()
-    },
-
-    deactivated () {
-      this.stopCamera()
     }
   }
 </script>
@@ -142,10 +105,10 @@
   lang="scss"
   scoped
 >
-  @use 'sass:math';
-  @import '~arc-cd/src/variables';
-  @import '~arc-cd/src/fonts';
-  @import '~arc-cd/src/typography';
+  @use "sass:math";
+  @import "~arc-cd/src/variables";
+  @import "~arc-cd/src/fonts";
+  @import "~arc-cd/src/typography";
 
   .arc-connect-modal {
     align-items: flex-start;

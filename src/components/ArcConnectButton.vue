@@ -31,20 +31,20 @@
 >
   @import '~arc-cd/src/variables';
 
-  $enter-vr-button-padding: 20px;
-  $enter-vr-button-width: 58px;
-  $enter-vr-button-height: 34px;
+  $arc-enter-vr-button-padding: 20px;
+  $arc-enter-vr-button-width: 58px;
+  $arc-enter-vr-button-height: 34px;
 
   .arc-connect-button {
     background-color: rgba(0, 0, 0, 0.35);
     border: 0;
     border-radius: 8px;
-    bottom: $enter-vr-button-padding;
+    bottom: $arc-enter-vr-button-padding;
     cursor: pointer;
-    min-height: $enter-vr-button-height;
-    min-width: $enter-vr-button-width;
+    min-height: $arc-enter-vr-button-height;
+    min-width: $arc-enter-vr-button-width;
     position: absolute;
-    right: calc(#{2 * $enter-vr-button-padding} + #{$enter-vr-button-width});
+    right: calc(#{2 * $arc-enter-vr-button-padding} + #{$arc-enter-vr-button-width});
     transition: background-color .05s ease;
     z-index: 999;
 

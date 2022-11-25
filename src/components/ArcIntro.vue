@@ -30,7 +30,7 @@
       </div>
       <div class="section">
         <p>
-          <i>2:</i> <strong>Open the remote settings</strong>
+          <i>2:</i> Open the remote settings
           <span>
             (
             <img
@@ -41,25 +41,19 @@
             >
             )
           </span>
-          and <i>scan this QR code</i>.
+          and enter this code:
         </p>
-        <qr-code
-          :options="{ color: {dark: themeColors['dark'], light: themeColors['secondary']}, width: 300}"
-          :value="deviceName"
-          class="qr-code"
-        />
+        <p><code>{{ deviceName }}</code></p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import VueQrcode from '@chenfengyuan/vue-qrcode/src/index.js'
   import ThemeColors from 'arc-cd/src/_variables.scss?module'
 
   export default {
     name: 'arc-intro',
-    components: { 'qr-code': VueQrcode },
 
     props: {
       deviceName: {
@@ -70,7 +64,6 @@
       themeColors: {
         type: Object,
         default () {
-          console.info(ThemeColors)
           return ThemeColors
         }
       }
@@ -93,11 +86,11 @@
   lang="scss"
   scoped
 >
-  @use 'sass:math';
-  @import '../styles/variables';
-  @import '~arc-cd/src/variables';
-  @import '~arc-cd/src/fonts';
-  @import '~arc-cd/src/typography';
+  @use "sass:math";
+  @import "../styles/variables";
+  @import "~arc-cd/src/variables";
+  @import "~arc-cd/src/fonts";
+  @import "~arc-cd/src/typography";
 
   .intro {
     align-items: center;
@@ -155,14 +148,9 @@
       }
     }
 
-    .qr-code {
-      max-height: 30vh;
-      max-width: 30vh;
-
-      @media (orientation: landscape) {
-        max-height: 40vh;
-        max-width: 40vh;
-      }
+    code {
+      font-size: 2rem;
+      letter-spacing: 2px;
     }
   }
 </style>

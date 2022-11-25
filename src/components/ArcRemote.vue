@@ -5,9 +5,9 @@
   >
     <div class="top">
       <arc-intro
+        v-if="deviceName !== null"
         :device-name="deviceName"
         :route-app="$arcOptions.routeApp"
-        v-if="deviceName !== null"
       />
       <transition
         appear
@@ -15,34 +15,34 @@
         name="fade"
       >
         <div
-          class="button-bar"
           v-if="connected"
+          class="button-bar"
         >
           <button
-            @click="toggleInfo"
             class="button button-info"
+            @click="toggleInfo"
           >
             <img
-              src="~arc-cd/images/info-24px.svg"
               alt="Info symbol"
               class="icon"
+              src="~arc-cd/images/info-24px.svg"
               title="Show/Hide info screen"
             >
           </button>
           <span class="status">
             Status:&nbsp;
             <strong
-              class="connected"
               v-if="connected"
+              class="connected"
             >Connected</strong>
             <strong
-              class="not-connected"
               v-else
+              class="not-connected"
             >Not Connected</strong>
           </span>
           <button
-            @click="toggleFullscreen"
             class="button button-fullscreen"
+            @click="toggleFullscreen"
           >
             <transition
               appear
@@ -50,18 +50,18 @@
               name="fade"
             >
               <img
-                src="~arc-cd/images/fullscreen_exit-24px.svg"
+                v-if="fullscreen"
                 alt="Exit fullscreen symbol"
                 class="icon"
+                src="~arc-cd/images/fullscreen_exit-24px.svg"
                 title="Exit fullscreen"
-                v-if="fullscreen"
               >
               <img
-                src="~arc-cd/images/fullscreen-24px.svg"
+                v-else
                 alt="Enter fullscreen symbol"
                 class="icon"
+                src="~arc-cd/images/fullscreen-24px.svg"
                 title="Enter fullscreen"
-                v-else
               >
             </transition>
           </button>
@@ -88,10 +88,10 @@
 <script>
   import { connectAsync } from 'async-mqtt'
   import { ArcTopics, createPayload, eventNameToType } from 'arc-events'
-  import { v4 as uuidv4 } from 'uuid'
   import { exitFullscreen, requestFullscreen } from '../utils/PrefixedFullscreen.js'
 
   import ArcIntro from './ArcIntro.vue'
+  import { getOrGenerateName } from '../utils/getOrGenerateName'
 
   export default {
     name: 'arc-remote',
@@ -102,7 +102,7 @@
 
     data () {
       return {
-        deviceName: null,
+        deviceName: getOrGenerateName(),
         paircode: null,
         connected: false,
         infoActive: false,
@@ -116,9 +116,8 @@
      * Get a device name and create the paircode out of it.
      */
     async mounted () {
-      this.deviceName = this.generateName()
       this.paircode = this.$arcOptions.app + '/' + this.deviceName.replace(' ', '-').toLowerCase()
-      this.connect()
+      await this.connect()
     },
 
     methods: {
@@ -155,20 +154,6 @@
       },
 
       /**
-       * Get a random device name
-       */
-      generateName () {
-        let stored = localStorage.getItem('arc-name')
-
-        if (stored) {
-          return stored
-        }
-
-        localStorage.setItem('arc-name', uuidv4())
-        return this.generateName()
-      },
-
-      /**
        * Start the connection to the MQTT Server
        *
        * @return {Promise<void>}
@@ -176,7 +161,7 @@
       async connect () {
         try {
           this.connecting = true
-          this.mqttClient = await connectAsync(`${this.$arcOptions.protocol}://${this.$arcOptions.host}:${this.$arcOptions.port}`)
+          this.mqttClient = await connectAsync(`${this.$arcOptions.protocol}://${this.$arcOptions.host}:${this.$arcOptions.port}${this.$arcOptions.path}`)
           this.mqttClient.on('message', this.messageListener)
           await this.mqttClient.subscribe(this.paircode + '/' + ArcTopics.STATUS)
           await this.mqttClient.subscribe(this.paircode + '/' + ArcTopics.ADD_EVENT_LISTENER)
@@ -199,6 +184,8 @@
         const subTopic = topicPath[topicPath.length - 1]
 
         const message = JSON.parse(payload.toString())
+
+        console.info({ topicPath, subTopic, message })
 
         switch (subTopic) {
           case ArcTopics.STATUS:
@@ -256,13 +243,13 @@
           return
         }
 
-        const type = eventNameToType(event.type)
-
-        if (!this.activeListeners.has(type)) {
+        if (!this.activeListeners.has(event.type)) {
           return
         }
 
+        const type = eventNameToType(event.type)
         const payload = createPayload(event, type)
+
         if (!payload) {
           return
         }
@@ -288,11 +275,11 @@
   @import "~arc-cd/src/fonts";
   @import "~arc-cd/src/typography";
 
-  $button-bar-height: .75 * $inner-padding;
+  $button-bar-height: .75 * $arc-inner-padding;
 
   .fade-enter-active,
   .fade-leave-active {
-    transition: opacity $duration ease;
+    transition: opacity $arc-duration ease;
   }
 
   .fade-enter,
@@ -313,7 +300,7 @@
 
     &.connected {
       .top {
-        padding-bottom: $inner-padding;
+        padding-bottom: $arc-inner-padding;
       }
     }
 
@@ -328,7 +315,7 @@
   .bottom {
     display: flex;
     height: 100%;
-    transition: transform $duration ease, padding $duration ease;
+    transition: transform $arc-duration ease, padding $arc-duration ease;
     width: 100%;
   }
 

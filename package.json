@@ -1,6 +1,6 @@
 {
   "name": "arc-vue-remotes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "Vue components for controlling an A-Frame VR experience on a smartphone from a second device through MQTT.",
   "repository": "git@github.com:arcs-vr/arc-remotes.git",
@@ -36,11 +36,11 @@
   "devDependencies": {
     "arc-cd": "arcs-vr/arc-cd",
     "core-js": "^3",
-    "regenerator-runtime": "^0.13.5",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.1"
+    "eslint-plugin-promise": "^5.1.1",
+    "regenerator-runtime": "^0.13.5"
   }
 }
