@@ -185,8 +185,6 @@
 
         const message = JSON.parse(payload.toString())
 
-        console.info({ topicPath, subTopic, message })
-
         switch (subTopic) {
           case ArcTopics.STATUS:
             if (message.type === 'vr') {

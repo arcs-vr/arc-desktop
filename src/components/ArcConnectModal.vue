@@ -41,17 +41,25 @@
         @submit.prevent="connect"
       >
         <p>
-          <i>2A)</i>&nbsp;Scan the QR code shown on the other device.
+          <i>2A)</i>&nbsp;Enter the code shown on the other device.
         </p>
-        <label>
-          <span>Enter the code:</span>
+        <div class="device-name">
           <input
+            id="deviceName"
             v-model="deviceName"
+            autofocus
+            class="device-name__input"
+            name="deviceName"
+            placeholder="e.g. x17aB"
             type="text"
             @keydown.enter="connect"
           />
-          <button type="submit">Submit</button>
-        </label>
+          <button
+            class="device-name__button"
+            type="submit"
+          >Connect
+          </button>
+        </div>
       </form>
     </div>
   </div>
@@ -111,13 +119,14 @@
   @import "~arc-cd/src/typography";
 
   .arc-connect-modal {
-    align-items: flex-start;
+    align-items: center;
     background-color: $theme-dark;
     color: $theme-light;
     display: flex;
     flex-direction: column;
     font-family: sans-serif, monospace;
     height: 100%;
+    justify-content: center;
     left: 50%;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -132,6 +141,35 @@
       position: absolute;
       right: 1rem;
       top: 1rem;
+    }
+
+    .device-name {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+
+      &__input {
+        border: 0;
+        display: flex;
+        flex-grow: 1;
+        flex-shrink: 1;
+        font-size: 1.2rem;
+        height: 2.5rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      &__button {
+        align-items: center;
+        background-color: $theme-light;
+        border: 0;
+        display: flex;
+        flex-grow: 0;
+        flex-shrink: 0;
+        font-size: 1.2rem;
+        height: 2.5rem;
+      }
     }
 
     .modal-body {
