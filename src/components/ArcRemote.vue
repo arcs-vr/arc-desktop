@@ -104,7 +104,7 @@
       return {
         deviceName: getOrGenerateName(),
         paircode: null,
-        connected: false,
+        connected: true,
         infoActive: false,
         fullscreen: false,
         connecting: false,

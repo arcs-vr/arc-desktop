@@ -1,37 +1,35 @@
 <template v-once>
-  <div class="intro">
-    <div class="column">
-      <div class="section">
-        <img
-          alt="The lettering ARCS stylized in isometric design"
-          class="logo-image"
-          src="~arc-cd/images/arc-logo-small.jpg"
-          title="ARCS: A-Frame Remote Controls System"
-        >
-        <h1 class="title">Remote Controls</h1>
-      </div>
-      <div class="section">
-        <p class="paragraph">
-          <strong>Start interacting</strong>
-          with the experience on your smartphone or computer
-          <strong>from this device</strong>.
-        </p>
-      </div>
-    </div>
-    <div class="column">
-      <div class="section">
-        <p>
-          <i>1:</i> Open the app here:
-          <router-link
-            :to="{ name: $arcOptions.routeApp }"
-            v-text="appUrl"
-          />
-        </p>
-      </div>
-      <div class="section">
-        <p>
-          <i>2:</i> Open the remote settings
-          <span>
+  <div class="ArcIntro">
+    <ArcContentSection>
+      <img
+        alt="The lettering ARCS stylized in isometric design"
+        class="logo-image"
+        src="~arc-cd/images/arc-logo-large.jpg"
+        title="ARCS: A-Frame Remote Controls System"
+      >
+
+      <ArcText tag="h1">Remote Controls</ArcText>
+    </ArcContentSection>
+
+    <ArcContentSection>
+      <ArcText>Start interacting with the experience on your smartphone or computer from this device.</ArcText>
+    </ArcContentSection>
+
+    <ArcContentSection>
+      <ArcText>
+        <strong>1:</strong> Open the app here:
+
+        <router-link
+          :to="{ name: $arcOptions.routeApp }"
+          v-text="appUrl"
+        />
+      </ArcText>
+    </ArcContentSection>
+    <ArcContentSection>
+      <ArcText>
+        <strong>2:</strong> Open the remote settings
+
+        <span>
             (
             <img
               alt="Game controller symbol"
@@ -40,21 +38,25 @@
               title="Connect remote controller"
             >
             )
-          </span>
-          and enter this code:
-        </p>
-        <p><code>{{ deviceName }}</code></p>
-      </div>
-    </div>
+        </span>
+        and enter this code:
+      </ArcText>
+
+      <ArcText tag="code">
+        {{ deviceName }}
+      </ArcText>
+    </ArcContentSection>
   </div>
 </template>
 
 <script>
   import ThemeColors from 'arc-cd/src/_variables.scss?module'
+  import ArcContentSection from './ArcContentSection'
+  import ArcText from './ArcText'
 
   export default {
     name: 'arc-intro',
-
+    components: { ArcText, ArcContentSection },
     props: {
       deviceName: {
         type: String,
@@ -92,14 +94,14 @@
   @import "~arc-cd/src/fonts";
   @import "~arc-cd/src/typography";
 
-  .intro {
+  .ArcIntro {
     align-items: center;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    gap: 1rem;
     justify-content: center;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding: 2rem;
     text-align: center;
     width: 100%;
@@ -110,47 +112,9 @@
       max-width: 20vmin;
     }
 
-    .title {
-      font-size: 1.6rem;
-      line-height: 1;
-      margin-top: 0;
-    }
-
-    .paragraph {
-      font-size: 1.2rem;
-      text-align: center;
-    }
-
-    .section {
-      margin: auto;
-      max-width: math.div($desktop, 2);
-    }
-
-    i {
-      color: $theme-secondary;
-      font-style: normal;
-    }
-
     .icon {
       display: inline;
       vertical-align: middle;
-    }
-
-    @media (orientation: landscape) {
-      flex-direction: row;
-    }
-
-    .column {
-      width: 100%;
-
-      @media (orientation: landscape) {
-        width: 50%;
-      }
-    }
-
-    code {
-      font-size: 2rem;
-      letter-spacing: 2px;
     }
   }
 </style>

@@ -1,24 +1,25 @@
 <template>
-  <div class="arc-connect-modal">
-    <div class="modal-header">
+  <div class="ArcConnectModal">
+    <div class="ArcConnectModal__header">
       <button
-        class="close-button"
+        class="ArcConnectModal__closeButton"
         type="button"
         @click="$emit('close')"
       >
         Close
       </button>
     </div>
-    <div class="modal-body">
+    <div class="ArcConnectModal__body">
       <div class="section">
         <img
           alt="The lettering ARCS stylized in isometric design"
-          class="logo-image"
+          class="ArcConnectModal__logo"
           src="~arc-cd/images/arc-logo-small.jpg"
           title="ARCS: A-Frame Remote Controls System"
         >
         <h1 class="title">Remote Controlling this VR Experience</h1>
       </div>
+
       <div class="section">
         <p>
           Control this experience from another smartphone, tablet or pc.<br>
@@ -118,7 +119,7 @@
   @import "~arc-cd/src/fonts";
   @import "~arc-cd/src/typography";
 
-  .arc-connect-modal {
+  .ArcConnectModal {
     align-items: center;
     background-color: $theme-dark;
     color: $theme-light;
@@ -137,7 +138,7 @@
     width: 100%;
     z-index: 11000;
 
-    .modal-header {
+    &__header {
       position: absolute;
       right: 1rem;
       top: 1rem;
@@ -172,7 +173,7 @@
       }
     }
 
-    .modal-body {
+    &__body {
       align-items: center;
       display: flex;
       flex-direction: column;
@@ -182,7 +183,7 @@
       width: 100%;
     }
 
-    .logo-image {
+    &__logo {
       margin-top: -28px;
       max-height: 20vmin;
       max-width: 20vmin;
@@ -193,25 +194,13 @@
       margin: 0;
     }
 
-    .close-button {
+    &__closeButton {
       background: transparent;
       border: 0;
       color: $theme-light;
       cursor: pointer;
       font-size: 1rem;
       margin-left: auto;
-    }
-
-    .camera-permission-info {
-      color: $theme-light;
-      display: block;
-      font-size: 1rem;
-      left: 0;
-      padding: 1rem;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 100%;
     }
 
     .section {
@@ -230,23 +219,6 @@
     img {
       // A-Frame hides all images for assets by default
       display: initial !important;
-    }
-
-    .video,
-    .video-wrapper {
-      height: 300px;
-      margin: auto;
-      position: relative;
-      width: 300px;
-    }
-
-    .video {
-      // A-Frame hides all videos for assets by default
-      background-color: lighten($theme-dark, 30%);
-      border-radius: .5rem;
-      display: block !important;
-      object-fit: cover;
-      object-position: center;
     }
   }
 </style>

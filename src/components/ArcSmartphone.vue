@@ -8,50 +8,46 @@
       </p>
     </div>
     <div class="column left">
-      <div
-        class="interaction-area"
-        ref="cursorBoundary"
-      >
-        <div class="cursor-wrapper">
-          <span class="cursor-root"/>
-          <span class="label">
-            Touch and drag to navigate.
-          </span>
-        </div>
-        <div class="cursor-wrapper">
-          <span
-            :class="{'animated': cursorX === 0 && cursorY === 0}"
-            :style="cursorTransform"
-            @touchstart.passive
-            class="cursor"
-            ref="cursor"
-          />
-        </div>
+      <div class="interaction-area">
+        <ArcJoystick
+          id="joyL"
+          label="Touch and drag to navigate."
+          @update="(x, y) => updateJoystick(0, x, y)"
+        />
       </div>
     </div>
     <div
-      class="column right"
       ref="buttonBase"
+      class="column right"
     >
-      <div
-        @click="publishMouseEvent('click', 2)"
-        @touchEnd="publishMouseEvent('mouseup', 2)"
-        @touchstart="publishMouseEvent('mousedown', 2)"
-        class="interaction-area right-click-area"
-      >
+      <div class="buttons">
+        <div
+          class="interaction-area right-click-area"
+          @click="publishMouseEvent('click', 2)"
+          @touchEnd="publishMouseEvent('mouseup', 2)"
+          @touchstart="publishMouseEvent('mousedown', 2)"
+        >
         <span class="label">
           Secondary Click
         </span>
-      </div>
-      <div
-        @click="publishMouseEvent('click', 0)"
-        @touchEnd="publishMouseEvent('mouseup', 0)"
-        @touchstart="publishMouseEvent('mousedown', 0)"
-        class="interaction-area left-click-area"
-      >
+        </div>
+        <div
+          class="interaction-area left-click-area"
+          @click="publishMouseEvent('click', 0)"
+          @touchEnd="publishMouseEvent('mouseup', 0)"
+          @touchstart="publishMouseEvent('mousedown', 0)"
+        >
         <span class="label">
           Main Click
         </span>
+        </div>
+      </div>
+      <div class="joystick-right">
+        <ArcJoystick
+          id="joyR"
+          label="Touch and drag to look."
+          @update="(x, y) => updateJoystick(1, x, y)"
+        />
       </div>
     </div>
   </arc-remote>
@@ -62,117 +58,28 @@
   type="application/ecmascript"
 >
   import ArcRemote from './ArcRemote.vue'
+  import ArcJoystick from './ArcJoystick.vue'
 
   export default {
     name: 'arc-smartphone',
 
-    components: { ArcRemote },
-
-    data () {
-      return {
-        currentStart: null,
-        currentHold: null,
-        cursorX: 0,
-        cursorY: 0,
-        keys: new Set()
-      }
-    },
-
-    async mounted () {
-      await this.$nextTick()
-
-      this.$refs.cursor.addEventListener('touchstart', this.startMovement, { passive: false })
-      this.$refs.cursor.addEventListener('touchmove', this.updateMovement, { passive: false })
-      this.$refs.cursor.addEventListener('touchend', this.stopMovement, { passive: false })
-    },
-
-    beforeDestroy () {
-      this.$refs.cursor.removeEventListener('touchstart', this.startMovement)
-      this.$refs.cursor.removeEventListener('touchmove', this.updateMovement)
-      this.$refs.cursor.removeEventListener('touchend', this.stopMovement)
-    },
+    components: { ArcJoystick, ArcRemote },
 
     methods: {
 
       /**
-       * Start all fake key presses
-       */
-      startMovement () {
-        if (navigator.vibrate) {
-          navigator.vibrate([50])
-        }
-
-        const cursorRect = this.$refs.cursor.getBoundingClientRect()
-        const boundaryRect = this.$refs.cursorBoundary.getBoundingClientRect()
-
-        this.currentStart = {
-          clientX: cursorRect.left + (cursorRect.width / 2),
-          clientY: cursorRect.top + (cursorRect.height / 2)
-        }
-
-        this.currentBound = {
-          width: boundaryRect.width / 2,
-          height: boundaryRect.height / 2
-        }
-      },
-
-      /**
-       * Update all fake key presses
-       * @param {TouchEvent} event
-       */
-      updateMovement (event) {
-        event.preventDefault()
-        this.currentHold = event.touches[0]
-
-        this.cursorX = this.absMin(this.currentHold.clientX - this.currentStart.clientX, this.currentBound.width)
-        this.cursorY = this.absMin(this.currentHold.clientY - this.currentStart.clientY, this.currentBound.height)
-
-        const distance = Math.sqrt(Math.pow(this.cursorX, 2) + Math.pow(this.cursorY, 2))
-
-        if (distance > 3) {
-          const radians = -.25 * Math.PI + this.mapRadians(this.cursorY, this.cursorX)
-          const normalizedForce = distance / Math.min(this.currentBound.height, this.currentBound.width)
-
-          this.updateJoystick(-radians, normalizedForce)
-        }
-      },
-
-      mapRadians (y, x) {
-        const radians = Math.atan2(y, x)
-
-        if (radians >= 0) { // Angle is between 0 and pi, no offset needed
-          return radians
-        }
-
-        if (radians < 0) { // Angle is between -pi and 0, needs to be offset 2pi
-          return radians + (2 * Math.PI)
-        }
-      },
-
-      /**
-       * Clear all fake key presses
-       * @param {TouchEvent} event
-       */
-      stopMovement (event) {
-        this.cursorX = 0
-        this.cursorY = 0
-        this.currentStart = null
-        this.currentHold = null
-
-        this.updateJoystick(0, 0)
-      },
-
-      /**
        * Recreate the key map and publish the appropriate keyup/keydown events
        *
-       * @param {Number} radians
-       * @param {Number} force
+       * @param {Number} side, 0 = 'left', 1 = 'right'
+       * @param {Number} x
+       * @param {Number} y
        */
-      updateJoystick (radians, force) {
+      updateJoystick (side, x, y) {
         const customEvent = new CustomEvent('stickmove', {
           detail: {
-            radians: radians,
-            force: force
+            side,
+            x,
+            y
           }
         })
 
@@ -199,24 +106,6 @@
         customEvent.button = button
 
         this.$refs.remote.publishInput(customEvent)
-      },
-
-      absMin (first, second) {
-        const negation = (first < 0 || second < 0) ? -1 : 1
-        const min = Math.min(Math.abs(first), Math.abs(second))
-
-        return negation * min
-      }
-    },
-
-    computed: {
-
-      /**
-       * The "joystick"'s transformation
-       * @return {string}
-       */
-      cursorTransform () {
-        return `transform: translate(${this.cursorX}px, ${this.cursorY}px)`
       }
     }
   }
@@ -226,10 +115,10 @@
   lang="scss"
   scoped
 >
-  @import '../styles/variables';
-  @import '~arc-cd/src/variables';
-  @import '~arc-cd/src/fonts';
-  @import '~arc-cd/src/typography';
+  @import "../styles/variables";
+  @import "~arc-cd/src/variables";
+  @import "~arc-cd/src/fonts";
+  @import "~arc-cd/src/typography";
 
   .portrait-hint {
     align-items: center;
@@ -263,7 +152,6 @@
 
     &.right {
       border-left: 1px solid $theme-light;
-      flex-direction: row;
       overflow: hidden;
     }
   }
@@ -316,52 +204,17 @@
     }
   }
 
-  .cursor-wrapper {
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-
-    .label {
-      color: darken($theme-primary, 50%);
-      left: 50%;
-      position: absolute;
-      text-transform: uppercase;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 40vmin;
-    }
+  .buttons {
+    border-bottom: 1px solid $theme-light;
+    display: flex;
+    flex-direction: row;
+    height: 30%;
+    width: 100%;
   }
 
-  .cursor-root,
-  .cursor {
-    border-radius: 50%;
-    display: block;
+  .joystick-right {
+    border-top: 1px solid $theme-light;
+    height: 70%;
+    position: relative;
   }
-
-  $cursor-base: 4rem;
-
-  .cursor-root {
-    background-color: transparentize($theme-light, .75);
-    height: $cursor-base;
-    width: $cursor-base;
-  }
-
-  .cursor {
-    background-color: transparentize($theme-light, .5);
-    background-image: url('~arc-cd/images/joystick_arrows.svg');
-    border: 2px solid transparentize($theme-light, .25);
-    height: 4 * $cursor-base;
-    max-height: 60vmin;
-    max-width: 60vmin;
-    width: 4 * $cursor-base;
-
-    &.animated {
-      transition: transform .2s ease;
-    }
-  }
-</style>
-
-<style lang="scss">
-  @import '~arc-cd/src/reset';
 </style>
