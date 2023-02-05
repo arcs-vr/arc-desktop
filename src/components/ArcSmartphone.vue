@@ -126,12 +126,11 @@
     color: $theme-light;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    gap: 1rem;
+    inset: 0 0 0 0;
     justify-content: center;
-    left: 0;
+    padding: 1rem;
     position: absolute;
-    top: 0;
-    width: 100%;
     z-index: 1030;
 
     @media (orientation: landscape) {

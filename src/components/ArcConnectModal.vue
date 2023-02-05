@@ -10,57 +10,50 @@
       </button>
     </div>
     <div class="ArcConnectModal__body">
-      <div class="section">
-        <img
-          alt="The lettering ARCS stylized in isometric design"
-          class="ArcConnectModal__logo"
-          src="~arc-cd/images/arc-logo-small.jpg"
-          title="ARCS: A-Frame Remote Controls System"
-        >
-        <h1 class="title">Remote Controlling this VR Experience</h1>
-      </div>
+      <img
+        alt="The lettering ARCS stylized in isometric design"
+        class="ArcConnectModal__logo"
+        src="~arc-cd/images/arc-logo-small.jpg"
+        title="ARCS: A-Frame Remote Controls System"
+      >
+      <h1 class="title">Remote Controlling this VR Experience</h1>
 
-      <div class="section">
-        <p>
-          Control this experience from another smartphone, tablet or pc.<br>
-          Follow these two easy steps:
-        </p>
-      </div>
+      <p>
+        Control this experience from another smartphone, tablet or pc.<br>
+        Follow these two easy steps:
+      </p>
 
-      <div class="section">
-        <p>
-          <i>1)</i>&nbsp;On your second device, open the remote control website:
-          <router-link
-            :to="{name: $arcOptions.routeRemote}"
-            v-text="remoteUrl"
-          />
-        </p>
-      </div>
+      <p>
+        <i>1)</i>&nbsp;On your second device, open the remote control website:
+        <RouterLink
+          :to="{name: $arcOptions.routeRemote}"
+          v-text="remoteUrl"
+        />
+      </p>
+
+      <p>
+        <i>2)</i>&nbsp;Enter the code shown on the other device.
+      </p>
 
       <form
-        class="section"
+        class="device-name"
         @submit.prevent="connect"
       >
-        <p>
-          <i>2A)</i>&nbsp;Enter the code shown on the other device.
-        </p>
-        <div class="device-name">
-          <input
-            id="deviceName"
-            v-model="deviceName"
-            autofocus
-            class="device-name__input"
-            name="deviceName"
-            placeholder="e.g. x17aB"
-            type="text"
-            @keydown.enter="connect"
-          />
-          <button
-            class="device-name__button"
-            type="submit"
-          >Connect
-          </button>
-        </div>
+        <input
+          id="deviceName"
+          v-model="deviceName"
+          autofocus
+          class="device-name__input"
+          name="deviceName"
+          placeholder="e.g. x17aB"
+          type="text"
+          @keydown.enter="connect"
+        />
+        <button
+          class="device-name__button"
+          type="submit"
+        >Connect
+        </button>
       </form>
     </div>
   </div>
@@ -131,7 +124,6 @@
     left: 50%;
     overflow-x: hidden;
     overflow-y: scroll;
-    padding: 2rem;
     position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -150,26 +142,39 @@
       flex-direction: row;
       gap: 1rem;
 
+      @media screen and (max-width: $desktop) {
+        flex-direction: column;
+      }
+
       &__input {
-        border: 0;
+        border: 1px solid $theme-light;
+        color: $theme-light;
         display: flex;
         flex-grow: 1;
         flex-shrink: 1;
-        font-size: 1.2rem;
+        font-family: monospace;
+        font-size: 1.5rem;
         height: 2.5rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
+        letter-spacing: 4px;
+        padding: 1rem;
+
+        @media screen and (max-width: $desktop) {
+          text-align: center;
+        }
       }
 
       &__button {
         align-items: center;
-        background-color: $theme-light;
+        background-color: $theme-primary;
         border: 0;
+        color: $theme-light;
+        cursor: pointer;
         display: flex;
         flex-grow: 0;
         flex-shrink: 0;
-        font-size: 1.2rem;
+        font-size: 2rem;
         height: 2.5rem;
+        padding: 1rem;
       }
     }
 
@@ -178,7 +183,10 @@
       display: flex;
       flex-direction: column;
       font-size: 1.2rem;
+      gap: 1rem;
       justify-content: space-between;
+      max-width: math.div($desktop, 2);
+      padding: 1rem;
       text-align: center;
       width: 100%;
     }
@@ -201,10 +209,6 @@
       cursor: pointer;
       font-size: 1rem;
       margin-left: auto;
-    }
-
-    .section {
-      max-width: math.div($desktop, 2);
     }
 
     a {

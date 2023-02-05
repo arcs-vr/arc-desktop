@@ -40,9 +40,10 @@
 
     &:is(code) {
       border: 1px solid $theme-light;
-      font-size: 3rem;
+      font-family: monospace;
+      font-size: 1.5rem;
       letter-spacing: 4px;
-      padding: .5rem;
+      padding: 1rem;
     }
   }
 </style>

@@ -46,11 +46,11 @@
         </span>
       </p>
       <div
-        :class="{'active': pointerLocked}"
-        @click="lockPointer"
-        class="mouse-hints"
         ref="pointerEventsBase"
+        :class="{'active': pointerLocked}"
+        class="mouse-hints"
         tabindex="1"
+        @click="lockPointer"
       >
         <div
           :class="clicks['0'] === true ? 'pressed' : ''"
@@ -82,7 +82,6 @@
 
     data () {
       return {
-        connected: false,
         pointerLocked: false,
         pointerVisual: false,
         keys: {},
@@ -199,10 +198,10 @@
   lang="scss"
   scoped
 >
-  @import '../styles/variables';
-  @import '~arc-cd/src/variables';
-  @import '~arc-cd/src/fonts';
-  @import '~arc-cd/src/typography';
+  @import "../styles/variables";
+  @import "~arc-cd/src/variables";
+  @import "~arc-cd/src/fonts";
+  @import "~arc-cd/src/typography";
 
   $size: 25vmax;
 
@@ -292,5 +291,5 @@
 </style>
 
 <style lang="scss">
-  @import '~arc-cd/src/reset';
+  @import "~arc-cd/src/reset";
 </style>

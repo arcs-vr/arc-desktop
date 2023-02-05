@@ -128,11 +128,13 @@
 </script>
 
 <style lang="scss">
+  @use "sass:math";
   @import "../styles/variables";
   @import "~arc-cd/src/variables";
 
   .ArcJoystick {
     $cursor-base: 8rem;
+    $cursor-base-third: math.div($cursor-base, 3);
 
     align-items: center;
     display: flex;
@@ -160,13 +162,13 @@
     &__center {
       background-color: transparentize($theme-light, .75);
       border-radius: 50%;
-      height: $cursor-base / 3;
+      height: $cursor-base-third;
       left: 50%;
       pointer-events: none;
       position: absolute;
       top: 50%;
       transform: translate(-50%, -50%);
-      width: $cursor-base / 3;
+      width: $cursor-base-third;
     }
 
     &__cursor {

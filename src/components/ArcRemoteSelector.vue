@@ -1,16 +1,13 @@
 <template v-once>
-  <main
-    v-if="show"
-    class="ArcRemoteSelector"
-  >
+  <main class="ArcRemoteSelector">
     <ArcText tag="h1">Remote Control Selection</ArcText>
 
     <ArcText>
-      Select the second device type you want to use, to control the virtual reality experience.
+      Select the second device type you want to use to control the virtual reality experience.
     </ArcText>
 
     <div class="ArcRemoteSelector__columns">
-      <router-link
+      <RouterLink
         :to="{name: routeDesktop}"
         class="ArcRemoteSelector__button"
       >
@@ -20,8 +17,8 @@
           src="~arc-cd/images/computer-24px.svg"
         />
         <span>Desktop&nbsp;/&nbsp;Laptop</span>
-      </router-link>
-      <router-link
+      </RouterLink>
+      <RouterLink
         :to="{name: routeSmartphone}"
         class="ArcRemoteSelector__button"
       >
@@ -31,7 +28,7 @@
           src="~arc-cd/images/phone_android-24px.svg"
         />
         <span>Handheld</span>
-      </router-link>
+      </RouterLink>
     </div>
   </main>
 </template>
@@ -51,24 +48,6 @@
         type: String,
         required: true
       }
-    },
-
-    data () {
-      return {
-        show: false
-      }
-    },
-
-    beforeRouteEnter (to, from, next) {
-      const isTouch = window.matchMedia('(pointer: coarse)').matches
-
-      next(function (vm) {
-        if (isTouch) {
-          vm.$router.push({ name: vm.routeSmartphone })
-        }
-
-        vm.show = true
-      })
     }
   }
 </script>
@@ -115,7 +94,7 @@
       flex-shrink: 0;
       font-size: 1.5rem;
       gap: 1rem;
-      height: 100%;
+      height: auto;
       padding: 1rem;
       text-decoration: none;
       width: 100%;

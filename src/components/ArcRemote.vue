@@ -19,7 +19,7 @@
           class="button-bar"
         >
           <button
-            class="button button-info"
+            class="button"
             @click="toggleInfo"
           >
             <img
@@ -41,7 +41,7 @@
             >Not Connected</strong>
           </span>
           <button
-            class="button button-fullscreen"
+            class="button"
             @click="toggleFullscreen"
           >
             <transition
@@ -104,7 +104,7 @@
       return {
         deviceName: getOrGenerateName(),
         paircode: null,
-        connected: true,
+        connected: false,
         infoActive: false,
         fullscreen: false,
         connecting: false,
@@ -338,14 +338,17 @@
     }
 
     .button {
+      align-items: center;
       background: transparent;
       border: 0;
       color: $theme-light;
       cursor: pointer;
+      display: flex;
       font-size: 1.6rem;
       height: $button-bar-height;
       line-height: $button-bar-height;
       outline: 0;
+      padding: .5rem;
 
       &:focus {
         background-color: transparentize($theme-light, .75);
